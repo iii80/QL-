@@ -322,14 +322,14 @@ function sys_kongjian() {
       exit 1
     fi
   else
-    Ubunkj="$(df -h|grep -v tmpfs |grep "/dev/.*" |awk '{print $4}' |awk 'NR==1')"
+    Ubunkj="$(df -h|grep -v tmpfs |grep -v shm |grep "/dev/.*" |awk '{print $4}' |awk 'NR==1')"
     FINAL=`echo ${Ubunkj: -1}`
     if [[ "${FINAL}" =~ (M|K) ]]; then
       print_error "敬告：可用空间小于[ ${Sys_kj}G ]，不支持安装青龙${Ql_nvjdc}，请加大磁盘空间容量"
       sleep 1
       exit 1
     fi
-    Ubuntu_kj="$(df -h|grep -v tmpfs |grep "/dev/.*" |awk '{print $4}' |awk 'NR==1' |sed 's/.$//g')"
+    Ubuntu_kj="$(df -h|grep -v tmpfs |grep -v shm |grep "/dev/.*" |awk '{print $4}' |awk 'NR==1' |sed 's/.$//g')"
     Kongjian="$(awk -v num1=${Ubuntu_kj} -v num2=${Sys_kj} 'BEGIN{print(num1>num2)?"0":"1"}')"
     ECHOY "您当前系统可用空间为${Ubuntu_kj}G"
     if [[ "${Kongjian}" == "1" ]];then
